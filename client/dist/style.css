@@ -1,6 +1,8 @@
 body {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   background: #f1f1f1;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 .navbar {
@@ -22,16 +24,8 @@ body {
 }
 
 button {
-  outline: none;
+  cursor: pointer;
   border-style: none;
-}
-.btn:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-.btn:focus {
-  outline: none !important;
 }
 
 .add-control {
@@ -42,32 +36,33 @@ button {
 }
 
 .btn-add {
+  font-size: 14px;
   background-color: green;
   color: #fff;
   border-radius: 5px;
   padding: 8px 10px;
   right: 50px;
-  margin-right: 20px;
 }
 
 .watched {
+  font-size: 25px;
   align-self: flex-end;
   background-color: green;
   color: black;
-  border-radius: 5px;
+  border-radius: 1px;
   padding: 8px 10px;
   right: 50px;
 }
 
 .to-watch {
+  font-size: 25px;
   right: 20px;
   align-self: flex-end;
-  background-color: green;
+  background-color: #999;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 1px;
   padding: 8px 10px;
-  right: 50px;
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .search-bar {
@@ -82,12 +77,13 @@ button {
 }
 
 .btn-search {
+  font-size: 14px;
   outline: none;
   border-radius: 10%;
   padding: 8px 10px;
   right: 50px;
   margin-right: 20px;
-  outline: thin gray;
+  border: 1px solid gray;
 }
 
 
@@ -95,11 +91,6 @@ button {
   margin: 20px;
 }
 
-.movie-list {
-  height: 50vh;
-  margin: 0 40px;
-  border: solid 0.5px gray;
-}
 
 .container {
   display: flex;
@@ -107,10 +98,26 @@ button {
   justify-content: center;
 }
 
+.movie-list {
+  height: 80vh;
+  margin: 0 40px;
+  border: solid 0.5px gray;
+}
+
 .movie-entry {
+  display: flex;
+  justify-content: space-between;
   font-size: 20px;
-  align-self: center;
-  text-align: center;
   padding: 30px;
   border-bottom: solid 0.5px gray;
+}
+
+.btn-pending {
+  font-size: 15px;
+  background-color: gray;
+  color: #fff;
+  border-radius: 10%;
+  padding: 8px 10px;
+  right: 50px;
+  margin-right: 20px;
 }

@@ -11,20 +11,53 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      movieArray: [
-
-      ],
+      movieArray: [],
       searchInput: '',
+      watchedMovies: [],
+      toWatchMovies: [],
     };
+
+    this.watchedArray = [];
+    this.toWatchArray = [];
 
     this.getData = this.getData.bind(this);
     this.addMovie = this.addMovie.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.activeWatch = this.activeWatch.bind(this);
+    this.activeToWatch = this.activeToWatch.bind(this);
+
+  }
+
+  activeWatch(e) {
+    e.preventDefault();
+
+    for (let i = 0; i < this.state.movieArray.length; i++) {
+      if (this.state.movieArray[i].watch === true) {
+        this.watchedArray.push({title: this.state.movieArray[i].title, watch: true,})
+      }
+     }
+
+     this.setState({
+      movieArray: [...this.watchedArray]
+    })
+
+  }
+
+  activeToWatch(e) {
+
+    for (let i = 0; i < this.state.movieArray.length; i++) {
+      if (this.state.movieArray[i].watch === false) {
+        this.toWatchArray.push({title: this.state.movieArray[i].title, watch: false,})
+      }
+     }
+
+     this.setState({
+      movieArray: [...this.toWatchArray]
+    })
 
   }
 
   getData(e) {
-
     this.setState({
       searchInput: e.target.value,
     })
@@ -32,12 +65,16 @@ class App extends React.Component {
 
   addMovie(e) {
     e.preventDefault();
+    if (this.state.searchInput === '') {
+      alert('Insert movie title to add a movie');
+      return;
+    }
 
     this.setState({
       movieArray: [...this.state.movieArray,
         {
           title: this.capitalizeFirstLetter(this.state.searchInput),
-          watch: false,
+          watch: Math.random() < 0.5,
         }],
     })
 
@@ -51,11 +88,15 @@ class App extends React.Component {
 
  handleSearch(e) {
   e.preventDefault();
+  if (this.state.searchInput === '') {
+    alert('Insert movie title to search');
+    return;
+  }
 
   let wasFound = false;
 
   for (let i = 0; i < this.state.movieArray.length; i++) {
-    if (this.state.movieArray[i].title.toLowerCase() === this.state.searchInput) {
+    if (this.state.movieArray[i].title.toLowerCase().includes(this.state.searchInput.toLowerCase())) {
       this.setState({
         movieArray: [{title: this.state.movieArray[i].title}]
       })
@@ -82,8 +123,8 @@ class App extends React.Component {
         </nav>
         <AddMovie getData={this.getData} addMovie={this.addMovie}/>
         <div className="container">
-          <button className="watched">Watched</button>
-          <button className="to-watch">To Watch</button>
+          <button onClick={this.activeWatch} className="watched">Watched</button>
+          <button onClick={this.activeToWatch} className="to-watch">To Watch</button>
           <SearchBar getData={this.getData} handleSearch={this.handleSearch}/>
         </div>
 
