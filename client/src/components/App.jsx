@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import exampleMovieData from '../data/exampleMovieData.js';
 import MovieHeader from './MovieHeader.jsx';
 import AddMovie from './AddMovie.jsx';
@@ -11,10 +12,9 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      movieArray: [],
+      currentList: [],
+      moviesList: [],
       searchInput: '',
-      watchedMovies: [],
-      toWatchMovies: [],
     };
 
     this.watchedArray = [];
@@ -28,31 +28,49 @@ class App extends React.Component {
 
   }
 
+
+
   activeWatch(e) {
     e.preventDefault();
 
-    for (let i = 0; i < this.state.movieArray.length; i++) {
-      if (this.state.movieArray[i].watch === true) {
-        this.watchedArray.push({title: this.state.movieArray[i].title, watch: true,})
+    // if (this.state.movieList.length > 0) {
+    //   for (let i = 0; i < this.state.movieList.length; i++) {
+    //     if (this.state.movieList[i].watch === true) {
+    //       this.watchedArray.push({title: this.state.movieList[i].title, watch: true,})
+    //     }
+    //    }
+    // }
+
+    for (let i = 0; i < this.state.currentList.length; i++) {
+      if (this.state.currentList[i].watch === true) {
+        this.watchedArray.push({title: this.state.currentList[i].title, watch: true,})
       }
      }
 
      this.setState({
-      movieArray: [...this.watchedArray]
+      moviesList: [...this.state.currentList],
+    })
+
+     this.setState({
+      currentList: [...this.watchedArray]
     })
 
   }
 
   activeToWatch(e) {
 
-    for (let i = 0; i < this.state.movieArray.length; i++) {
-      if (this.state.movieArray[i].watch === false) {
-        this.toWatchArray.push({title: this.state.movieArray[i].title, watch: false,})
+    for (let i = 0; i < this.state.currentList.length; i++) {
+      if (this.state.currentList[i].watch === false) {
+        this.toWatchArray.push({title: this.state.currentList[i].title, watch: false,})
       }
      }
 
      this.setState({
-      movieArray: [...this.toWatchArray]
+      moviesList: [...this.state.currentList],
+    })
+
+     this.setState({
+      currentList: [...this.toWatchArray]
     })
 
   }
@@ -71,12 +89,14 @@ class App extends React.Component {
     }
 
     this.setState({
-      movieArray: [...this.state.movieArray,
+      currentList: [...this.state.currentList,
         {
           title: this.capitalizeFirstLetter(this.state.searchInput),
           watch: Math.random() < 0.5,
         }],
     })
+
+
 
 
   }
@@ -96,9 +116,9 @@ class App extends React.Component {
   let wasFound = false;
 
   for (let i = 0; i < this.state.movieArray.length; i++) {
-    if (this.state.movieArray[i].title.toLowerCase().includes(this.state.searchInput.toLowerCase())) {
+    if (this.state.currentList[i].title.toLowerCase().includes(this.state.searchInput.toLowerCase())) {
       this.setState({
-        movieArray: [{title: this.state.movieArray[i].title}]
+        currentList: [{title: this.state.currentList[i].title}]
       })
 
       wasFound = true;
@@ -128,7 +148,7 @@ class App extends React.Component {
           <SearchBar getData={this.getData} handleSearch={this.handleSearch}/>
         </div>
 
-          <MovieList movies={this.state.movieArray} />
+          <MovieList movies={this.state.currentList} />
 
       </React.Fragment>
     )
