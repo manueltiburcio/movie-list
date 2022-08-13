@@ -30,19 +30,22 @@ class App extends React.Component {
 
 
   componentDidMount() {
-    axios.get('http://localhost:3000/movies')
-      .then(response => {
-        // handle success
-        console.log('got movies: \t', response.data);
-
+    axios.get('/movies')
+    .then(response => {
+      console.log(response.data);
+      response.data.forEach(movie => {
         this.setState({
-          currentList: response.data,
+          currentList: [...this.state.currentList, {
+            id: movie.id,
+            title: movie.title,
+            watch: Math.random() < 0.5,
+          }],
         })
-
+      })
     })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
+    .catch(function (error) {
+      // handle error
+      console.log(error);
     });
   }
 
@@ -91,6 +94,11 @@ class App extends React.Component {
 
   }
 
+  // TODO home handler get all list back
+  handleHome(e) {
+
+  }
+
   getData(e) {
     this.setState({
       searchInput: e.target.value,
@@ -104,14 +112,29 @@ class App extends React.Component {
       return;
     }
 
-    this.setState({
-      currentList: [...this.state.currentList,
-        {
-          title: this.capitalizeFirstLetter(this.state.searchInput),
-          watch: Math.random() < 0.5,
-        }],
+    // add movies to db
+    axios.post('/movies', {
+      title: this.state.searchInput,
     })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
+    // get all movies with the updated one
+    axios.get('/movies')
+    .then(response => {
+      // handle success
+      this.setState({
+        currentList: response.data,
+      })
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    });
 
 
 
@@ -131,10 +154,12 @@ class App extends React.Component {
 
   let wasFound = false;
 
-  for (let i = 0; i < this.state.movieArray.length; i++) {
+  for (let i = 0; i < this.state.currentList.length; i++) {
     if (this.state.currentList[i].title.toLowerCase().includes(this.state.searchInput.toLowerCase())) {
+
       this.setState({
-        currentList: [{title: this.state.currentList[i].title}]
+        movieList: [...this.state.currentList],
+        currentList: [{title: this.state.currentList[i].title}],
       })
 
       wasFound = true;

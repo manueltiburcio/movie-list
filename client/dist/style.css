@@ -8,15 +8,19 @@ body {
   margin: 0 40px;
 }
 
+button:hover{
+  color: #ff7a59;
+  border: #ff7a59 solid 0.5px;
+  background:#fff;
+}
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: center;
   background: #F0A500;
   color: #111;
-  align-self: center;
   padding: 20px;
-  width: 100vw;
   border-width: 1px;
   margin-bottom: 20px;
 }
@@ -122,6 +126,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 .movie-list {
@@ -129,21 +134,19 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 80vh;
 }
 
 .movie-entry {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: #fff;
   text-align: center;
   flex-wrap: wrap;
-  font-size: 20px;
   width: 70vw;
-  font-size: 20px;
   margin: 20px 0;
-  padding: 30px;
-  border: solid 5px #F0A500;
+  padding: 20px;
+  border: solid 3px #F0A500;
   border-radius: 10px;
 }
 
