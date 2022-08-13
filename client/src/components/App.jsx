@@ -29,6 +29,22 @@ class App extends React.Component {
   }
 
 
+  componentDidMount() {
+    axios.get('http://localhost:3000/movies')
+      .then(response => {
+        // handle success
+        console.log('got movies: \t', response.data);
+
+        this.setState({
+          currentList: response.data,
+        })
+
+    })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+    });
+  }
 
   activeWatch(e) {
     e.preventDefault();

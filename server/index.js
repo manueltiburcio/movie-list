@@ -1,26 +1,33 @@
 const express = require('express');
-const app = express();
-const PORT = 3000 || process.env.PORT;
 const db = require('./db');
 
-// start our first query
-db.query(
-  'SELECT * FROM `movies`',
-  function(err, results, fields) {
-    console.log(results); // results contains rows returned by server
-  }
-)
+// Middleware
+const morgan = require('morgan');
+const cors = require('cors');
 
+// Router
+const router = require('./routes.js');
+
+const app = express();
+module.exports.app = app;
+
+// Set what we are listening on.
+app.set('port', 3000);
+
+// Logging and parsing
+app.use(morgan('dev'));
+app.use(cors());
+app.use(express.json());
+
+// Serve the client files
 app.use(express.static('client/dist'));
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port: ${PORT}`);
-})
+// Set up our routes
+app.use(router);
 
-// GET MOVIES
-// should respond with a status code of 200
-// should respond with a list of movies
 
-app.get('/movies', (req, res) => {
-  res.status(200).send();
-})
+// If we are being run directly, run the server.
+if (!module.parent) {
+  app.listen(app.get('port'));
+  console.log('Listening on', app.get('port'));
+}
